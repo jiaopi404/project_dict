@@ -1,0 +1,6 @@
+server:
+  port: 9092
+
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl # 也支持 Slf4j Log4j Log4j2 ...

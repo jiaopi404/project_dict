@@ -1,0 +1,87 @@
+# 1. 端口 server.port
+# 2. 修改控制台的启动信息 spring.banner.image or spring.banner.location
+# 3. 支持自定义属性，如下的 wechat-config
+# 4. spring.servlet.multipart.maxFileSize 属性，默认限制上传文件大小为 1m，可进行修改
+# 5. spring.servlet.multipart.maxRequestSize 属性，最大请求体体积，DataSize.ofMegabytes(10); 默认10MB
+
+#server:
+#  port: 9092
+#============================================================================================================================================================================================
+spring:
+  # ------ profiles
+  profiles:
+    active: dev # 使用 application-dev 中的配置
+  # ------ data source
+  datasource:                                   # 数据源相关的配置节点
+    type: com.zaxxer.hikari.HikariDataSource    # 指定数据源的类型 HikariDataSource
+#    type: com.alibaba.druid.pool.DruidDataSource # druid 数据源
+    # Loading class `com.mysql.jdbc.Driver'. This is deprecated. The new driver class is `com.mysql.cj.jdbc.Driver'. The driver is automatically registered via the SPI and manual loading of the driver class is generally unnecessary.
+    driver-class-name: com.mysql.cj.jdbc.Driver    # mysql / MariaDB driver，被禁用了
+    url: jdbc:mysql://47.108.156.216:3307/sb_demo_001?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true
+    username: root
+    password: 123456
+#    druid: # 也支持各种配置
+#      driver: xxx
+    hikari:
+      connection-timeout: 30000       # 等待连接池分配连接的最大时长（毫秒），超过这个时长还没可用的连接则发生 SQLException, 默认30分钟
+      minimum-idle: 5                 # 最小连接数
+      maximum-pool-size: 20           # 最大连接数
+      auto-commit: true               # 自动提交
+      idle-timeout: 600000            # 连接超时的最大时长（毫秒），超时则被释放（retired），默认 10 分钟
+      pool-name: DataSourceHikariCP   # 连接池名字
+      max-lifetime: 1800000           # 连接的生命时长（毫秒），超时而且没被使用则释放（retired)，默认 30 分钟
+      connection-test-query: SELECT 1
+  #  -------------------
+  banner: # 修改 banner
+#    image:
+#      location: classpath:banner/hello_kitty.jpg
+#      pixelmode: text
+#      width: 50
+#      bitdepth: 4
+#      margin: 20
+#  也可以直接加一个 banner.txt 展示
+    location: classpath:banner/banner.txt
+  # --------------
+  # 修改上传文件 和 请求体的大小
+  servlet:
+    multipart:
+      # 最大文件体积
+      max-file-size: 10MB
+      # 最大请求体 体积
+      max-request-size: 100MB
+#-------------------
+#  mvc:
+#    static-path-pattern: /web/** # 访问静态文件的路径变为 localhost:8098/web/test.html
+#-------------------
+#  thymeleaf:                            # thymeleaf 的配置
+#    prefix: classpath:/templates/html/  # 配置 html 文件路径，注意最后加 /
+#    suffix: .html                       # 配置后缀，默认 .html
+
+#========================================================
+#整合mybatis,设置别名，识别mapper文件
+mybatis:
+  type-aliases-package: com.jiaopi404.pojo # 所有数据库表逆向后所一一映射的实体类 Entity/Bean/POJO
+  mapper-locations: classpath:mybatis/mapper/*.xml     # 所有 mapper 映射的文件所在目录位置
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl # 也支持 Slf4j Log4j Log4j2 ...
+
+# ========================================================
+# 通用的 mapper 配置
+mapper:
+  mappers: com.jiaopi404.my.mapper.MyMapper # 所有 mapper 都需要实现的接口
+  not-empty: false # 在进行数据库操作的时候，判断一个属性是否为空的时候，是否需要自动追加不为空字符串的判断；
+                   # 如：username != null 后面不需要 username != ''
+  identity: MYSQL  # mapper 的标识符，类似语言
+
+# ========================================================
+# 分页插件助手的配置 PageHelper
+pagehelper:
+  helper-dialect: mysql           # 语言，类似上面 mapper.identity
+  support-methods-arguments: true # 支持方法的参数，个人理解为 某个Bean 的方法需要 PageHelper 的参数时可以获取的到
+
+#=====================================================================
+#yml中的自定义配置 与 表达式
+#wechat-config:
+#  app-id: kdfjsfkjaklfjkas
+#  app-secret: skfdjdskfdsfjdas
+#  port: ${server.port}

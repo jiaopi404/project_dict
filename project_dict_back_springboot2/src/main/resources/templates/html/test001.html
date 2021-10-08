@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--配置属性的命名空间？？-->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>thymeleaf 测试</title>
+</head>
+<body>
+
+<div>这是<span th:text="固定文本"></span></div>
+<!--模板语法-->
+<div>这是<span th:text="${someText}"></span></div>
+<div>String 测试<span th:text="${#strings.contains(someText, 't')}"></span></div>
+<div>Date 测试<span th:text="${#dates.format(someDate)}"></span></div>
+<div>if 测试<span th:if="${someText.equals(null)}"></span></div>
+<div>if 测试<span th:switch="${someText.equals(null)}">
+    <span th:case="true">111</span>
+    <span th:case="false">222</span>
+    <span th:case="*">未知</span>
+</span></div>
+<div>
+    <span th:each="str, status : ${strList}">
+        <span th:text="${str}"></span><br />
+        index: <span th:text="${status.index}"></span>
+    </span>
+</div>
+<div>
+    <!--渲染 Map<String, String>-->
+    <span th:each="kv : ${someMap}"> <!-- 顺序不固定 -->
+        <span th:text="${kv.key}"></span>
+        <span th:text="${kv.value}"></span>
+    </span>
+</div>
+
+<p>
+    -----------------------操作 request-----------------------------------
+</p>
+<div>
+    <div>request:</div>
+    <div th:text="${#request.getAttribute('reqAttr')}"></div>
+</div>
+<div>
+    <div>session:</div>
+    <div th:text="${#session.getAttribute('sessionAttr')}"></div>
+</div>
+
+</body>
+</html>
