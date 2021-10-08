@@ -4,3 +4,8 @@ server:
 mybatis:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl # 也支持 Slf4j Log4j Log4j2 ...
+
+# ====================================================================
+# 自定义配置，是否要开启 swagger
+swagger:
+  enabled: true
