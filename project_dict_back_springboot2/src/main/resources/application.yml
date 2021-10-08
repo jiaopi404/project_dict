@@ -17,7 +17,7 @@ spring:
 #    type: com.alibaba.druid.pool.DruidDataSource # druid 数据源
     # Loading class `com.mysql.jdbc.Driver'. This is deprecated. The new driver class is `com.mysql.cj.jdbc.Driver'. The driver is automatically registered via the SPI and manual loading of the driver class is generally unnecessary.
     driver-class-name: com.mysql.cj.jdbc.Driver    # mysql / MariaDB driver，被禁用了
-    url: jdbc:mysql://47.108.156.216:3307/sb_demo_001?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true
+    url: jdbc:mysql://47.108.156.216:3307/jiaopi_dict?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true
     username: root
     password: 123456
 #    druid: # 也支持各种配置
