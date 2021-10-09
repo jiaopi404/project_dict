@@ -12,14 +12,25 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+/**
+ * The type Swagger config my.
+ */
 @Configuration
 @EnableSwagger2
 public class SwaggerConfigMy {
 
-    //是否开启swagger，正式环境一般是需要关闭的，可根据springboot的多环境配置进行设置
+    /**
+     * 是否开启swagger，正式环境一般是需要关闭的，可根据springboot的多环境配置进行设置
+     */
     @Value(value = "${swagger.enabled}")
     Boolean swaggerEnabled;
 
+    /**
+     * 创建 容器
+     *
+     * @return the docket
+     */
+    @Bean
     public Docket createRestApi () {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(getApiInfo())
@@ -32,9 +43,13 @@ public class SwaggerConfigMy {
                 .paths(PathSelectors.any())
                 .build()
                 .pathMapping("/");
-                // 扫描的路径
     }
 
+    /**
+     * 创建 ApiInfo
+     *
+     * @return the api info
+     */
     public ApiInfo getApiInfo () {
         return new ApiInfoBuilder()
                 .title("jiaopi dict swagger2")

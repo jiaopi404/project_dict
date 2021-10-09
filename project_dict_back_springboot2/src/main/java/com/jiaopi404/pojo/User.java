@@ -1,5 +1,7 @@
 package com.jiaopi404.pojo;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -10,32 +12,41 @@ import java.util.Date;
 
 /****
  * @Author:jiaopi404
- * @Description:SysUser构建
+ * @Description:User构建
  * @Date 2021/1/4 14:30
  *****/
+@ApiModel(description = "User",value = "User")
 @Data
-@Table(name="sys_user")
-public class SysUser implements Serializable{
+@Table(name="tb_user")
+public class User implements Serializable{
 
+	private static final long serialVersionUID = 1896931959384614066L;
+	@ApiModelProperty(value = "id",required = false)
 	@Id
     @Column(name = "id")
 	private String id; // id
 
+	@ApiModelProperty(value = "用户名",required = false)
     @Column(name = "user_name")
 	private String userName; // 用户名
 
+	@ApiModelProperty(value = "wechat open id",required = false)
     @Column(name = "open_id")
 	private String openId; // wechat open id
 
+	@ApiModelProperty(value = "wechat union_id",required = false)
     @Column(name = "union_id")
 	private String unionId; // wechat union_id
 
+	@ApiModelProperty(value = "create time",required = false)
     @Column(name = "create_time")
 	private Date createTime; // create time
 
+	@ApiModelProperty(value = "update time",required = false)
     @Column(name = "update_time")
 	private Date updateTime; // update time
 
+	@ApiModelProperty(value = "是否删除了",required = false)
     @Column(name = "is_deleted")
 	private Integer isDeleted; // 是否删除了
 
