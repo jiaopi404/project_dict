@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jiaopi404.mapper.WordOxfordMapperCus">
+    <!--  <resultMap id="BaseResultMap" type="com.jiaopi404.sb_demo_001.pojo.TestTable">-->
+    <!--    <id column="id" jdbcType="VARCHAR" property="id" />-->
+    <!--    <result column="name" jdbcType="VARCHAR" property="name" />-->
+    <!--    <result column="age" jdbcType="INTEGER" property="age" />-->
+    <!--    <result column="update_time" jdbcType="TIME_WITH_TIMEZONE" property="updateTime" />-->
+    <!--  </resultMap>-->
+    <!--  <sql id="Base_Column_List">-->
+    <!--    id, `name`, age, update_time-->
+    <!--  </sql>-->
+    <!--  -->
+    <resultMap id="BaseResultMap" type="com.jiaopi404.pojo.WordOxford">
+        <id column="id" jdbcType="VARCHAR" property="id" />
+        <result column="word" jdbcType="VARCHAR" property="word" />
+        <result column="exp" jdbcType="VARCHAR" property="exp" />
+        <result column="create_time" jdbcType="TIME_WITH_TIMEZONE" property="createTime" />
+    </resultMap>
+    <!--    这个相当于要查询的列的，做一个集合-->
+    <sql id="Base_Column_List">
+        id, `word`, exp, create_time
+    </sql>
+<!--    <select id="getTestTableByNameLike" parameterType="java.lang.String" resultMap="BaseResultMap">-->
+<!--        select-->
+<!--        <include refid="Base_Column_List" />-->
+<!--        from-->
+<!--        tb_word_oxford-->
+<!--        where-->
+<!--        `word` like concat('%',#{name,jdbcType=VARCHAR},'%')-->
+<!--    </select>-->
+
+<!--    <select id="getAllWordOxford" resultMap="BaseResultMap">-->
+<!--        select-->
+<!--        <include refid="Base_Column_List" />-->
+<!--        from-->
+<!--        tb_word_oxford-->
+<!--    </select>-->
+
+    <insert id="insertWordList" parameterType="java.util.List">
+        insert into tb_word_oxford (id,word,exp,create_time)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id,jdbcType=VARCHAR},#{item.word,jdbcType=VARCHAR},#{item.exp,jdbcType=VARCHAR},#{item.createTime,jdbcType=TIME_WITH_TIMEZONE})
+        </foreach>
+    </insert>
+</mapper>
