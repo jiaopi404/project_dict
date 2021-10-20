@@ -17,4 +17,11 @@ public interface WordOxfordService {
      * @param wordOxfordList the word oxford list
      */
     void addList (List<WordOxford> wordOxfordList);
+
+    /**
+     * query 查询
+     * @param query
+     * @return
+     */
+    List<WordOxford> basicQuery (String query);
 }

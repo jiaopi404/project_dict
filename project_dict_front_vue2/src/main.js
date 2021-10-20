@@ -7,6 +7,8 @@ import '@/util/exception' // 处理异常
 
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+import '@/styles/common.scss'
+import '@/styles/cus-common.scss'
 
 Vue.use(ElementUI)
 

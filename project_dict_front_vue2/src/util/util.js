@@ -654,6 +654,14 @@ const $util = {
   cloneDeepSimple(obj) {
     return JSON.parse(JSON.stringify(obj))
   },
+  /**
+   * moment 默认格式化
+   * @param momentInstance
+   * @return {*}
+   */
+  momentDefaultFormat (momentInstance) {
+    return momentInstance.format('YYYY-MM-DD ddd HH:mm:ss')
+  }
 }
 
 export default $util

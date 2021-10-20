@@ -1,0 +1,38 @@
+/*flex 布局的类名*/
+.layout__flex-row__center__center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.layout__flex-row__left__center {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.layout__flex-row__right__center {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.layout__flex-row__space-between__center {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.hidden-by-style {
+  height: 0;
+  width: 0;
+  overflow: hidden;
+  border: 0;
+  margin: 0;
+}
+/*========================= [el-row 单行换行问题] ==================*/
+.el-row--flex-wrap.el-row {
+  display: flex;
+  flex-wrap: wrap;
+}
+.text-overflow-ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

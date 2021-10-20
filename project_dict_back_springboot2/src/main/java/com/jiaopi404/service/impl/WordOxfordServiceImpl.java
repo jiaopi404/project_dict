@@ -30,9 +30,22 @@ public class WordOxfordServiceImpl implements WordOxfordService {
     @Autowired
     private WordOxfordMapperCus wordOxfordMapperCus;
 
+    @Autowired
+    private WordOxfordMapper wordOxfordMapper;
+
     @Transactional
     @Override
     public void addList(List<WordOxford> wordOxfordList) {
         wordOxfordMapperCus.insertWordList(wordOxfordList);
+    }
+
+    @Override
+    public List<WordOxford> basicQuery(String query) {
+        Example example = new Example(WordOxford.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.orLike("word", query + "%");
+        criteria.orLike("exp", query + "%");
+        example.orderBy("word");
+        return wordOxfordMapper.selectByExample(example);
     }
 }
