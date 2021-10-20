@@ -15,9 +15,9 @@ const $util = {
     } catch (err) {
       if (err === false) { // element-ui 的表单验证错误
         if (message || $config.ifShowFormValidateDefaultMessage) {
-          throw new FormValidationError(message || '请完善表单', true, formComp)
+          throw new FormValidationError(message || '请完善表单', formComp, true)
         } else {
-          throw new FormValidationError('请完善表单', false, formComp)
+          throw new FormValidationError('请完善表单', formComp, false)
         }
       } else {
         throw err

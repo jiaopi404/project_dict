@@ -6,23 +6,21 @@ export default class FormValidationError extends CustomError{
    * 构造
    * @param message 信息
    * @param ifShowMessage 要不要显示 Message.error
-   * @param vm 当前验证的表单域组件
+   * @param context 当前验证的表单域组件
    */
-  constructor (message, ifShowMessage, vm) {
+  constructor (message, context, ifShowMessage) {
     super(message);
     this.ifShowMessage = ifShowMessage || false
-    this.vm = vm || null // 组件信息
-  }
-
-  toString () {
-    return `[FormValidationError]: code: ${this.code}, message: ${this.message}, ifShowMessage: ${this.ifShowMessage}`
+    this.context = context || null // 组件信息
   }
 
   // @Override 重写父类方法
   handler () {
     if (this.ifShowMessage && this.message) {
       Message.error(this.message)
+      console.error(this)
+    } else {
+      console.error(this)
     }
-    console.log('表单验证错误，组件：', this.vm)
   }
 }

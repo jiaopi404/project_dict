@@ -26,12 +26,11 @@ Vue.config.errorHandler = function (err) {
 window.addEventListener('error', function (errEvent) {
   // 首先阻止掉默认行为
   if (errEvent instanceof Event) {
-    console.log('错误时间，拦截到了')
-    errEvent.preventDefault()
+    errEvent.preventDefault() // 阻止到默认的控制台行为
   }
   if (errEvent instanceof ErrorEvent) { // 如果是错误事件，会有 error 对象
     ErrorHandler.handle(errEvent.error) // 处理错误
   } else {
-    console.log('不知道什么类型的错误事件', errEvent)
+    console.log('未知类型的错误事件', errEvent)
   }
 })

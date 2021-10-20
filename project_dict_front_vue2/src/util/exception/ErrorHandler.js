@@ -10,28 +10,28 @@ export default class ErrorHandler {
    * @param err 错误对象
    */
   static handle (err) {
-    // let isHandled
+    let isHandled
     for (const errorClass of ErrorHandler.handlers) {
       if (err instanceof errorClass) {
         if (err.handler) { // 实现了 handler 方法
           err.handler()
-          // isHandled++
+          isHandled++
           return
         } else { // 默认的 handler 方法
           ErrorHandler.defaultHandler(err)
-          // isHandled++
+          isHandled++
           return
         }
       }
     }
-    // if (!isHandled) {
-    //   console.log('这个错误没有 handle 住')
-    //   console.dir(err)
-    //   // element-ui 的 form.validate 抛出的是一个字符串，这样就无法获取到 track 信息了，所以直接不处理
-    // }
+    if (!isHandled) {
+      console.log('[ErrorNoHandler: ]', err)
+      console.error(err)
+    }
   }
 
   static defaultHandler (err) {
-    console.log('默认的 错误 handler 方法: ', err)
+    console.log('[DefaultHandler]', err)
+    console.error(err)
   }
 }
