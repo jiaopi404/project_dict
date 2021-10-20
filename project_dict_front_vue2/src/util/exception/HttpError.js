@@ -7,7 +7,6 @@ export default class HttpError extends CustomError{
   }
 
   handler () {
-    console.log('[HttpError]: ', this)
-    console.error(this)
+    console.log('%c [HttpError] ', 'color: #ff3040; font-size: 16px;', this)
   }
 }

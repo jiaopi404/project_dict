@@ -25,13 +25,11 @@ export default class ErrorHandler {
       }
     }
     if (!isHandled) {
-      console.log('[ErrorNoHandler: ]', err)
-      console.error(err)
+      console.log('%c [ErrorNoHandler] ', 'color: #ff3040; font-size: 16px;', this)
     }
   }
 
   static defaultHandler (err) {
-    console.log('[DefaultHandler]', err)
-    console.error(err)
+    console.log('%c [DefaultHandler] ', 'color: #ff3040; font-size: 16px;', err)
   }
 }

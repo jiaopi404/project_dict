@@ -18,9 +18,7 @@ export default class FormValidationError extends CustomError{
   handler () {
     if (this.ifShowMessage && this.message) {
       Message.error(this.message)
-      console.error(this)
-    } else {
-      console.error(this)
     }
+    console.log('%c [FormValidationError] ', 'color: #ff3040; font-size: 16px;', this)
   }
 }

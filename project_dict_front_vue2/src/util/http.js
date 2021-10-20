@@ -1,4 +1,5 @@
 import axios from 'axios'
+import HttpError from '@/util/exception/HttpError'
 
 const $http = axios.create({
   baseURL: '',
@@ -12,7 +13,7 @@ $http.interceptors.request.use(
     return config
   },
   error => {
-    return Promise.reject(error);
+    return Promise.reject(new HttpError('请求错误', error));
   },
 )
 
@@ -21,9 +22,8 @@ $http.interceptors.response.use(
     return Promise.resolve(response)
   },
   error => {
-    return Promise.reject(error)
+    return Promise.reject(new HttpError('响应错误', error))
   }
 )
-
 
 export default $http

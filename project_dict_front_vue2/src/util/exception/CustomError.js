@@ -6,7 +6,6 @@ export default class CustomError extends Error {
 
   // 需要后代 重写
   handler () {
-    console.log('[CustomError]: ', this)
-    console.error(this)
+    console.log('%c [CustomError] ', 'color: #ff3040; font-size: 16px;', this)
   }
 }
