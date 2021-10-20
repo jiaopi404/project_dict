@@ -2,15 +2,25 @@ package com.jiaopi404.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.jiaopi404.config.exception.ValidationException;
 import com.jiaopi404.mapper.UserWordOxfordMergeMapper;
+import com.jiaopi404.mapper.WordOxfordMapper;
 import com.jiaopi404.pojo.UserWordOxfordMerge;
+import com.jiaopi404.pojo.WordOxford;
+import com.jiaopi404.pojo.bo.AddUserWordOxfordMerge;
 import com.jiaopi404.service.UserWordOxfordMergeService;
+import com.jiaopi404.utils.UUIDGetter;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /****
  * @Author:jiaopi404
@@ -23,144 +33,59 @@ public class UserWordOxfordMergeServiceImpl implements UserWordOxfordMergeServic
     @Autowired
     private UserWordOxfordMergeMapper userWordOxfordMergeMapper;
 
+    @Autowired
+    private WordOxfordMapper wordOxfordMapper;
 
-    /**
-     * UserWordOxfordMerge条件+分页查询
-     * @param userWordOxfordMerge 查询条件
-     * @param page 页码
-     * @param size 页大小
-     * @return 分页结果
-     */
     @Override
-    public PageInfo<UserWordOxfordMerge> findPage(UserWordOxfordMerge userWordOxfordMerge, int page, int size){
-        //分页
-        PageHelper.startPage(page,size);
-        //搜索条件构建
-        Example example = createExample(userWordOxfordMerge);
-        //执行搜索
-        return new PageInfo<UserWordOxfordMerge>(userWordOxfordMergeMapper.selectByExample(example));
-    }
-
-    /**
-     * UserWordOxfordMerge分页查询
-     * @param page
-     * @param size
-     * @return
-     */
-    @Override
-    public PageInfo<UserWordOxfordMerge> findPage(int page, int size){
-        //静态分页
-        PageHelper.startPage(page,size);
-        //分页查询
-        return new PageInfo<UserWordOxfordMerge>(userWordOxfordMergeMapper.selectAll());
-    }
-
-    /**
-     * UserWordOxfordMerge条件查询
-     * @param userWordOxfordMerge
-     * @return
-     */
-    @Override
-    public List<UserWordOxfordMerge> findList(UserWordOxfordMerge userWordOxfordMerge){
-        //构建查询条件
-        Example example = createExample(userWordOxfordMerge);
-        //根据构建的条件查询数据
-        return userWordOxfordMergeMapper.selectByExample(example);
-    }
-
-
-    /**
-     * UserWordOxfordMerge构建查询对象
-     * @param userWordOxfordMerge
-     * @return
-     */
-    public Example createExample(UserWordOxfordMerge userWordOxfordMerge){
-        Example example=new Example(UserWordOxfordMerge.class);
+    @Transactional
+    public Integer addCommon(AddUserWordOxfordMerge addUserWordOxfordMerge) {
+        // 1. 查询看有没有已经添加过
+        Example example = new Example(UserWordOxfordMerge.class);
         Example.Criteria criteria = example.createCriteria();
-        if(userWordOxfordMerge!=null){
-            // 关联表主键
-            if(!StringUtils.isEmpty(userWordOxfordMerge.getId())){
-                    criteria.andEqualTo("id",userWordOxfordMerge.getId());
+        criteria.andEqualTo("ifDelete", 0);
+        criteria.andEqualTo("wordOxfordId", addUserWordOxfordMerge.getWordId());
+        criteria.andEqualTo("userId", addUserWordOxfordMerge.getUserId());
+        List<UserWordOxfordMerge> userWordOxfordMerges = userWordOxfordMergeMapper.selectByExample(example);
+        if (userWordOxfordMerges.size() != 0) {
+            // 2. 添加过，更新 times lastTime 不处理
+            UserWordOxfordMerge userWordOxfordMerge = userWordOxfordMerges.get(0);
+            userWordOxfordMerge.setLastTime(new Date());
+            return userWordOxfordMergeMapper.updateByPrimaryKey(userWordOxfordMerge);
+        } else {
+            // 3. 未添加过的，进行创建
+            UserWordOxfordMerge userWordOxfordMerge = new UserWordOxfordMerge();
+            WordOxford wordOxford = wordOxfordMapper.selectByPrimaryKey(addUserWordOxfordMerge.getWordId());
+            // 空指针检测
+            if (wordOxford == null) {
+                Map<String, String> errMap = new HashMap<>();
+                errMap.put("wordId", "找不到对应的字典");
+                throw new ValidationException(errMap, "参数错误");
             }
-            // 用户 id
-            if(!StringUtils.isEmpty(userWordOxfordMerge.getUserId())){
-                    criteria.andEqualTo("userId",userWordOxfordMerge.getUserId());
-            }
-            // 牛津词典 逻辑外键
-            if(!StringUtils.isEmpty(userWordOxfordMerge.getWordOxfordId())){
-                    criteria.andEqualTo("wordOxfordId",userWordOxfordMerge.getWordOxfordId());
-            }
-            // 单词 内容。冗余
-            if(!StringUtils.isEmpty(userWordOxfordMerge.getWord())){
-                    criteria.andEqualTo("word",userWordOxfordMerge.getWord());
-            }
-            // 背诵的 次数
-            if(!StringUtils.isEmpty(userWordOxfordMerge.getTimes())){
-                    criteria.andEqualTo("times",userWordOxfordMerge.getTimes());
-            }
-            // 是否标记为删除了 1 是 0 否
-            if(!StringUtils.isEmpty(userWordOxfordMerge.getIfDelete())){
-                    criteria.andEqualTo("ifDelete",userWordOxfordMerge.getIfDelete());
-            }
-            // 是否生词，设置为是，则在生词本； 1 是 0 否
-            if(!StringUtils.isEmpty(userWordOxfordMerge.getIfNewWord())){
-                    criteria.andEqualTo("ifNewWord",userWordOxfordMerge.getIfNewWord());
-            }
-            // 创建时间
-            if(!StringUtils.isEmpty(userWordOxfordMerge.getCreateTime())){
-                    criteria.andEqualTo("createTime",userWordOxfordMerge.getCreateTime());
-            }
-            // 上一次背诵的时间
-            if(!StringUtils.isEmpty(userWordOxfordMerge.getLastTime())){
-                    criteria.andEqualTo("lastTime",userWordOxfordMerge.getLastTime());
-            }
+            userWordOxfordMerge.setUserId(addUserWordOxfordMerge.getUserId());
+            userWordOxfordMerge.setWordOxfordId(addUserWordOxfordMerge.getWordId());
+            userWordOxfordMerge.setWord(wordOxford.getWord());
+            userWordOxfordMerge.setIfNewWord(1);
+            userWordOxfordMerge.setId(UUIDGetter.getAsString());
+            return userWordOxfordMergeMapper.insert(userWordOxfordMerge);
         }
-        return example;
     }
 
-    /**
-     * 删除
-     * @param id
-     */
     @Override
-    public Integer delete(String id){
-        return userWordOxfordMergeMapper.deleteByPrimaryKey(id);
+    public Integer removeById(String id) {
+        UserWordOxfordMerge userWordOxfordMerge = new UserWordOxfordMerge();
+        userWordOxfordMerge.setId(id);
+        userWordOxfordMerge.setIfDelete(1);
+        return userWordOxfordMergeMapper.updateByPrimaryKeySelective(userWordOxfordMerge);
     }
 
-    /**
-     * 修改UserWordOxfordMerge
-     * @param userWordOxfordMerge
-     */
     @Override
-    public Integer update(UserWordOxfordMerge userWordOxfordMerge){
-        return userWordOxfordMergeMapper.updateByPrimaryKey(userWordOxfordMerge);
-    }
-
-    /**
-     * 增加UserWordOxfordMerge
-     * @param userWordOxfordMerge
-     */
-    @Override
-    public Integer add(UserWordOxfordMerge userWordOxfordMerge){
-        return userWordOxfordMergeMapper.insert(userWordOxfordMerge);
-    }
-
-    /**
-     * 根据ID查询UserWordOxfordMerge
-     * @param id
-     * @return
-     */
-    @Override
-    public UserWordOxfordMerge findById(String id){
-        return userWordOxfordMergeMapper.selectByPrimaryKey(id);
-    }
-
-    /**
-     * 查询UserWordOxfordMerge全部数据
-     * @return
-     */
-    @Override
-    public List<UserWordOxfordMerge> findAll() {
-        return userWordOxfordMergeMapper.selectAll();
+    public PageInfo<UserWordOxfordMerge> getPageList(String userId, Integer pageNum, Integer pageSize, String query) {
+        PageHelper.startPage(pageNum, pageSize);
+        Example example = new Example(UserWordOxfordMerge.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("ifDelete", 0);
+        criteria.andEqualTo("userId", userId);
+        criteria.andLike("word", query + "%");
+        return new PageInfo<>(userWordOxfordMergeMapper.selectByExample(example));
     }
 }

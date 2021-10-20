@@ -2,6 +2,7 @@ package com.jiaopi404.service;
 
 import com.github.pagehelper.PageInfo;
 import com.jiaopi404.pojo.UserWordOxfordMerge;
+import com.jiaopi404.pojo.bo.AddUserWordOxfordMerge;
 
 import java.util.List;
 
@@ -12,58 +13,27 @@ import java.util.List;
  *****/
 public interface UserWordOxfordMergeService {
 
-    /***
-     * UserWordOxfordMerge多条件分页查询
-     * @param userWordOxfordMerge
-     * @param page
-     * @param size
+    /**
+     * 添加到生词本
+     * @param addUserWordOxfordMerge
      * @return
      */
-    PageInfo<UserWordOxfordMerge> findPage(UserWordOxfordMerge userWordOxfordMerge, int page, int size);
-
-    /***
-     * UserWordOxfordMerge分页查询
-     * @param page
-     * @param size
-     * @return
-     */
-    PageInfo<UserWordOxfordMerge> findPage(int page, int size);
-
-    /***
-     * UserWordOxfordMerge多条件搜索方法
-     * @param userWordOxfordMerge
-     * @return
-     */
-    List<UserWordOxfordMerge> findList(UserWordOxfordMerge userWordOxfordMerge);
-
-    /***
-     * 删除UserWordOxfordMerge
-     * @param id
-     */
-    Integer delete(String id);
-
-    /***
-     * 修改UserWordOxfordMerge数据
-     * @param userWordOxfordMerge
-     */
-    Integer update(UserWordOxfordMerge userWordOxfordMerge);
-
-    /***
-     * 新增UserWordOxfordMerge
-     * @param userWordOxfordMerge
-     */
-    Integer add(UserWordOxfordMerge userWordOxfordMerge);
+    Integer addCommon (AddUserWordOxfordMerge addUserWordOxfordMerge);
 
     /**
-     * 根据ID查询UserWordOxfordMerge
+     * 从生词本移除
      * @param id
      * @return
      */
-     UserWordOxfordMerge findById(String id);
+    Integer removeById (String id);
 
-    /***
-     * 查询所有UserWordOxfordMerge
+    /**
+     * 查询生词本列表
+     * @param userId
+     * @param pageNum
+     * @param pageSize
+     * @param query
      * @return
      */
-    List<UserWordOxfordMerge> findAll();
+    PageInfo<UserWordOxfordMerge> getPageList (String userId, Integer pageNum, Integer pageSize, String query);
 }

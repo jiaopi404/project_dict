@@ -1,5 +1,6 @@
 package com.jiaopi404.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.jiaopi404.pojo.WordOxford;
 import com.jiaopi404.service.WordOxfordService;
 import com.jiaopi404.utils.ResultV0;
@@ -26,13 +27,13 @@ public class WordOxfordController {
     private WordOxfordService wordOxfordService;
 
     @GetMapping("/baseQuery")
-    public ResultV0<List<WordOxford>> baseQuery(String query) {
+    public ResultV0<PageInfo<WordOxford>> baseQuery(String query) {
         List<WordOxford> wordOxfords = new ArrayList<>();
         //调用UserService实现分页条件查询User
         if (StringUtil.isEmpty(query)) {
-            return ResultV0.OK(wordOxfords, "查询成功");
+            return ResultV0.OK(new PageInfo<>(wordOxfords), "查询成功");
         }
-        wordOxfords = wordOxfordService.basicQuery(query);
-        return ResultV0.OK(wordOxfords, "查询成功");
+        PageInfo<WordOxford> wordOxfordPageInfo = wordOxfordService.basicQuery(query);
+        return ResultV0.OK(wordOxfordPageInfo, "查询成功");
     }
 }

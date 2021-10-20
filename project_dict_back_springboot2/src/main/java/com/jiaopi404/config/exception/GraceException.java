@@ -13,9 +13,8 @@ public class GraceException {
      * Display custom exception.
      *
      * @param errorMsg the error msg
-     * @return the custom exception
      */
-    public static CustomException display (String errorMsg) {
+    public static void display (String errorMsg) {
         throw new CustomException(errorMsg);
     }
 

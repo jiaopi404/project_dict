@@ -1,7 +1,7 @@
 <template>
   <div class="layout__header-only">
     <div class="layout__header layout__flex-row__space-between__center">
-      <div class="layout__header-logo">{{ greeting }}</div>
+      <div class="layout__header-logo">{{ greeting }}，Ass</div>
       <div class="layout__header-time">{{ nowTime }}</div>
     </div>
     <router-view />
@@ -35,7 +35,9 @@ export default {
 <style lang="scss" scoped>
 .layout__header-only {
   .layout__header {
+    padding: 0 20px;
     height: 80px;
+    background-color: lightblue;
   }
 }
 </style>

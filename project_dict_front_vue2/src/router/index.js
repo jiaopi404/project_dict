@@ -15,6 +15,11 @@ const routes = [
         path: '/',
         name: 'Recite',
         component: PageRecite
+      },
+      {
+        path: '/word-note-book',
+        name: 'WordNoteBook',
+        component: () => import("@/views/WordNoteBook")
       }
     ]
   },

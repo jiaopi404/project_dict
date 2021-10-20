@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import '@/util/exception' // 处理异常
+import '@/filters' // 注册全局 filters
 // import '@/util/testError'
 
 import ElementUI from 'element-ui';

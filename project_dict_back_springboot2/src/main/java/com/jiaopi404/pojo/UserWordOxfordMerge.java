@@ -39,7 +39,7 @@ public class UserWordOxfordMerge implements Serializable{
 
 	@ApiModelProperty(value = "背诵的 次数",required = false)
     @Column(name = "times")
-	private Integer times; // 背诵的 次数
+	private Integer times = 0; // 背诵的 次数
 
 	@ApiModelProperty(value = "是否标记为删除了 1 是 0 否",required = false)
     @Column(name = "if_delete")

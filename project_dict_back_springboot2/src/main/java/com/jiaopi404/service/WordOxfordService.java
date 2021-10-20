@@ -23,5 +23,5 @@ public interface WordOxfordService {
      * @param query
      * @return
      */
-    List<WordOxford> basicQuery (String query);
+    PageInfo<WordOxford> basicQuery (String query);
 }

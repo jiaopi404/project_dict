@@ -5,19 +5,12 @@ import com.github.pagehelper.PageInfo;
 import com.jiaopi404.mapper.WordOxfordMapper;
 import com.jiaopi404.mapper.WordOxfordMapperCus;
 import com.jiaopi404.pojo.WordOxford;
-import com.jiaopi404.pojo.bo.EnglishWord;
 import com.jiaopi404.service.WordOxfordService;
-import com.jiaopi404.utils.DictionaryReader;
-import com.jiaopi404.utils.UUIDGetter;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 import tk.mybatis.mapper.entity.Example;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /****
@@ -40,12 +33,14 @@ public class WordOxfordServiceImpl implements WordOxfordService {
     }
 
     @Override
-    public List<WordOxford> basicQuery(String query) {
+    public PageInfo<WordOxford> basicQuery(String query) {
+        // PageInfo
+        PageHelper.startPage(1, 10);
         Example example = new Example(WordOxford.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.orLike("word", query + "%");
-        criteria.orLike("exp", query + "%");
+        criteria.orLike("exp", "%" + query + "%");
         example.orderBy("word");
-        return wordOxfordMapper.selectByExample(example);
+        return new PageInfo<>(wordOxfordMapper.selectByExample(example));
     }
 }
